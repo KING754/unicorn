@@ -24,7 +24,7 @@ public class NettyServer {
     private EventLoopGroup      workerGroup = null;
     private ServerBootstrap     bootStrap   = null;
     
-    public void  launch(int serverPort){
+    public void  launch(final int serverPort){
         String osName = System.getProperty("os.name");
         this.initThreadGroup(osName);
         
@@ -43,9 +43,9 @@ public class NettyServer {
             @Override
             public void operationComplete(ChannelFuture arg0) throws Exception {
                 if (arg0.isSuccess()) {
-                    LOGGER.info("Netty服务启动成功！...监听端口：【{}】", 12000);
+                    LOGGER.info("Netty服务启动成功！...监听端口：【{}】", serverPort);
                 } else {
-                    LOGGER.info("Netty服务启动失败！...端口【{}】可能被占用！进程自动结束！", 12000);
+                    LOGGER.info("Netty服务启动失败！...端口【{}】可能被占用！进程自动结束！", serverPort);
                     System.exit(0);
                 }
             }
