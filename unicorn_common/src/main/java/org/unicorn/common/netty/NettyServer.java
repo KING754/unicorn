@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * @author KING
  * @date 2018年8月21日
  */
-
 public class NettyServer {
     private static final Logger LOGGER      = LoggerFactory.getLogger(NettyServer.class);
     private EventLoopGroup      bossGroup   = null;
