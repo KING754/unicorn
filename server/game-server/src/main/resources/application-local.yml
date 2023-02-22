@@ -1,0 +1,76 @@
+netty:
+  server:
+     port: 2023
+  gateways:
+    address: 127.0.0.1:2051;
+  config:
+    #id+type，必须唯一
+    id: 2
+    #reference to :rpc\proto\inner\server_msg.proto
+    #    SERVER_TYP_ERROR = 0;
+    #    SERVER_TYPE_GATEWAY = 1;    //网关服务器
+    #    SERVER_TYPE_LOGIN = 2;      //登录服务器
+    #    SERVER_TYPE_LOBBY = 3;      //大厅服务器
+    type: 5
+
+
+
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/game_server?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+      username: root
+      password: 123456
+      type: com.alibaba.druid.pool.DruidDataSource
+      initial-size: 10
+      max-active: 200
+      min-idle: 10
+      max-wait: 30000
+      keep-alive: true
+      test-on-borrow: true
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      validation-query: SELECT 1
+      filters: stat,wall,slf4j
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 500
+          enabled: true
+        slf4j:
+          enabled: true
+          statement-log-error-enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+          result-set-close-after-log-enabled: false
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1,192.168.0.222
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+      aop-patterns: com.game.dao.*,com.game.server.handler.*
+
+      #local or dev machine
+      remove-abandoned: true
+      remove-abandoned-timeout: 1800
+      log-abandoned: true
+
+
+
+
+mybatis-plus:
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  map-underscore-to-camel-case: true
+  call-setters-on-nulls: true
+

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package com.game.rpc.message.st.common;
+
+
+option java_package = "com.game.rpc.message.st.common";
+option java_outer_classname = "Common";
+
+message Player {
+    string          uqId             = 1;   //用户标识ID
+    string          nickname         = 2;   //用户昵称
+    int32           level            = 3;   //等级
+    SkillStore      skill_store      = 4;
+    repeated Card   cards            = 5;   //卡牌列表
+}
+
+message SkillStore{
+    int32           skillId         = 1;    //技能ID
+    bool            use             = 2;    //技能是否设置为使用
+}
+
+message Card{
+    int32          card_id          = 1;
+    int32          card_level       = 2;
+}
+

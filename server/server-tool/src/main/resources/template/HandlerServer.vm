@@ -1,0 +1,53 @@
+package com.game.server.handler${handler.packageStr};
+
+#if($handler.reqType)
+import ReqParseException;
+#end
+import com.game.netty.handler.HandlerTrigger;
+import com.game.netty.handler.business.BaseBusinessHandler;
+import Code;
+import MsgId;
+#if($handler.importObjStr)
+import $handler.importObjStr;
+#end
+import io.netty.channel.ChannelHandlerContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+*
+* @author KING
+* @date $date
+*/
+@Slf4j
+@Service
+@RequiredArgsConstructor
+@HandlerTrigger(msgId = MsgId.EN_MessageId.${handler.msgEnumName}_VALUE)
+public class $handler.name extends BaseBusinessHandler {
+
+    @Override
+    public void execute(ChannelHandlerContext ctx, byte[] bodyBytes, int reqSeq){
+#if($handler.reqType)
+        $handler.reqTypeFull req = null;
+        try{
+            req = ${handler.reqTypeFull}.parseFrom(bodyBytes);
+        }catch (Exception e) {
+            log.error("$handler.name $handler.reqType parse req have error.",e);
+            throw new ReqParseException("$handler.name $handler.reqType parse error.");
+        }
+
+        log.debug("receive $handler.msgEnumName $handler.reqType：\n{}", req);
+#end
+
+#if($handler.respType)
+        ${handler.respTypeFull}.Builder respBuilder = ${handler.respTypeFull}.newBuilder();
+        log.debug("resp:\n{}",respBuilder.toString());
+
+        super.sendMessage(ctx,MsgId.EN_MessageId.$handler.msgEnumName,respBuilder.build().toByteArray(),reqSeq, Code.En_Code.E_SUSS);
+#else
+        super.sendMessage(ctx,MsgId.EN_MessageId.$handler.msgEnumName,null,reqSeq, Code.En_Code.E_SUSS);
+#end
+    }
+
+}

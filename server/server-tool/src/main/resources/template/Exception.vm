@@ -1,0 +1,15 @@
+package com.game.exception.logic;
+
+import LogicException;
+import InnerRPC;
+import Code;
+
+/**
+* @author KING
+* @date $date
+*/
+public class $ex.name extends LogicException {
+    public ${ex.name}(String message) {
+        super(InnerRPC.EN_INNER_CODE.E_INNER_SUSS,Code.En_Code.$ex.codeEnumName, message);
+    }
+}

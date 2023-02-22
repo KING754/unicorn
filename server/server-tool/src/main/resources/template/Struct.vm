@@ -1,0 +1,204 @@
+package com.game.rpc.message.struct;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
+import java.nio.ByteBuffer;
+#foreach($field in $struct.fieldInfos)
+#if($field.type.type == "List")
+import java.util.ArrayList;
+import java.util.List;
+#end
+#end
+
+/**
+ * Gen from tool
+#if(($struct.comment) && $struct.comment != "")
+ * $struct.comment
+#end
+ * @author KING
+ * @date $date
+ */
+@Data
+@Slf4j
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class $struct.name extends BaseStruct {
+
+#foreach($field in $struct.fieldInfos)
+#set($fieldType = $field.type.type)
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+#if($fieldType == "Byte" || $fieldType == "Short" || $fieldType == "Integer" || $fieldType == "Long" || $fieldType == "String" ||
+    $fieldType == "Enum")
+    private static final short $fieldLengthName = $field.type.length;
+#elseif($fieldType == "List" && $field.type.structTypeName == "String")
+    private static final short $fieldLengthName = $field.type.length;
+#end
+#end
+
+
+#foreach($field in $struct.fieldInfos)
+#if(($field.comment) && $field.comment != "")
+   /**$!field.comment*/
+#end
+#if($field.type.type == "Enum")
+    private $field.type.structTypeName $field.name;
+#elseif($field.type.type == "List")
+    private List<$field.type.structTypeName> $field.name;
+#else
+    private $field.type.type $field.name;
+#end
+#end
+
+    public $struct.name (ByteBuffer buffer) {
+#if(!$struct.fieldInfos  || $struct.fieldInfos.size == 0)
+#else
+        try {
+#foreach($field in $struct.fieldInfos)
+#if($field.type.type == "Byte")
+            this.$field.name = buffer.get();
+#elseif($field.type.type == "Short")
+            this.$field.name = buffer.getShort();
+#elseif($field.type.type == "Integer")
+            this.$field.name = buffer.getInt();
+#elseif($field.type.type == "Long")
+            this.$field.name = buffer.getLong();
+#elseif($field.type.type == "String")
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+            this.$field.name = super.getStringFromBuffer($fieldLengthName,buffer);
+#elseif($field.type.type == "Enum")
+
+            short ${field.name}Value = buffer.getShort();
+            this.$field.name = ${field.type.structTypeName}.get${field.type.structTypeName}ByValue(${field.name}Value);
+
+#elseif($field.type.type == "List")
+            if(${field.name}Count != null && ${field.name}Count > 0){
+                ${field.name} = new ArrayList<>(${field.name}Count);
+                for (byte i = 0; i < ${field.name}Count; i++) {
+#if($field.type.structTypeName == "Byte")
+                    Byte listTempObj = buffer.get();
+#elseif($field.type.structTypeName == "Short")
+                    Short listTempObj = buffer.getShort();
+#elseif($field.type.structTypeName == "Integer")
+                    Integer listTempObj = buffer.getInt();
+#elseif($field.type.structTypeName == "Long")
+                    Long listTempObj = buffer.getLong();
+#elseif($field.type.structTypeName == "String")
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+                    String listTempObj = super.getStringFromBuffer($fieldLengthName,buffer);
+#elseif($field.type.childType == "Enum")
+                    short ${field.name}TempValue = buffer.getShort();
+                    ${field.type.structTypeName} listTempObj = ${field.type.structTypeName}.get${field.type.structTypeName}ByValue(${field.name}TempValue);
+#else
+                    ${field.type.structTypeName} listTempObj = new ${field.type.structTypeName}(buffer);
+#end
+                    if(listTempObj != null){
+                        ${field.name}Count++;
+                        ${field.name}.add(listTempObj);
+                    }
+                }
+            }
+
+#else
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+            this.$field.name = new $field.type.type (super.getBytesFromBuffer($fieldLengthName,buffer));
+#end
+#end
+        } catch (Exception e) {
+            log.info("$struct.name parse from byte[] error.{}", e);
+        }
+#end
+    }
+
+
+    public byte[] toByteArray() {
+#if(!$struct.fieldInfos || $struct.fieldInfos.size() == 0)
+        return null;
+#else
+        try {
+            ByteBuffer buffer = ByteBuffer.allocate(this.getTotalLength());
+
+#foreach($field in $struct.fieldInfos)
+#if($field.type.type == "Byte")
+            buffer.put(this.$field.name);
+#elseif($field.type.type == "Short")
+            buffer.putShort(this.$field.name);
+#elseif($field.type.type == "Integer")
+            buffer.putInt(this.$field.name);
+#elseif($field.type.type == "Long")
+            buffer.putLong(this.$field.name);
+#elseif($field.type.type == "String")
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+            super.putStringToBuffer(this.$field.name,$fieldLengthName,buffer);
+#elseif($field.type.type == "Enum")
+            buffer.putShort(this.${field.name}.getValue());
+#else
+            super.putBytesToBuffer(${field.name}.toByteArray(), buffer);
+#end
+#end
+
+            return buffer.array();
+        } catch (Exception e) {
+            log.info("$struct.name convert to byte[] error.info:{},error:{}", this, e);
+        }
+        return null;
+#end
+    }
+
+   public static $struct.name buildTestData(){
+        $struct.name $struct.firstLowerName = new $struct.name ();
+#if(!$struct.fieldInfos || $struct.fieldInfos.size == 0)
+#else
+#foreach($field in $struct.fieldInfos)
+#if($field.type.type == "Byte")
+        ${struct.firstLowerName}.set${field.firstUpName}((byte)$field.type.defaultValue);
+#elseif($field.type.type == "Short")
+        ${struct.firstLowerName}.set${field.firstUpName}((short)$field.type.defaultValue);
+#elseif($field.type.type == "Integer")
+        ${struct.firstLowerName}.set${field.firstUpName}($field.type.defaultValue);
+#elseif($field.type.type == "Long")
+        ${struct.firstLowerName}.set${field.firstUpName}(${field.type.defaultValue}L);
+#elseif($field.type.type == "String")
+        ${struct.firstLowerName}.set${field.firstUpName}("$field.type.defaultValue");
+#elseif($field.type.type == "Enum")
+        ${struct.firstLowerName}.set${field.firstUpName}(${field.type.structTypeName}.buildTestData());
+#else
+        ${struct.firstLowerName}.set${field.firstUpName}(${field.type.structTypeName}.buildTestData());
+#end
+#end
+#end
+
+        return $struct.firstLowerName;
+   }
+
+    public int getTotalLength(){
+        int totalLength = 0;
+#foreach($field in $struct.fieldInfos)
+#if($fieldType == "Byte" || $fieldType == "Short" || $fieldType == "Integer" || $fieldType == "Long" || $fieldType == "String" ||
+    $fieldType == "Enum")
+#set($fieldType = $field.type.type)
+#set($fieldLengthName = $field.type.type+"_"+$field.name+"_LENGTH")
+        totalLength += $fieldLengthName
+#elseif($fieldType  == "List")
+        if(this.${field.name} != null && !this.${field.name}.isEmpty()){
+            for(${field.type.structTypeName} obj : this.${field.name} ){
+                totalLength += obj.getTotalLength();
+            }
+        }
+#else
+        if(this.${field.name} != null){
+            totalLength += this.${field.name}.getTotalLength();
+        }
+#end
+#end
+        return totalLength;
+    }
+
+
+
+
+}

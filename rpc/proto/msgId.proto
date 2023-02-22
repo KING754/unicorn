@@ -1,0 +1,44 @@
+syntax = "proto3";
+package com.game.rpc.message.st;
+
+
+option java_package="com.game.rpc.message.st";
+option java_outer_classname = "MsgId";
+
+enum EN_MessageId{
+//消息ID
+//1000~4000  内部协议
+//1000~1500  房间
+//5000~ 5999 大厅协议
+
+    E_ERROR_ID              = 0;              //错误的消息ID
+    //1000~1500  房间
+    E_ROOM_START            = 1000;
+    E_ROOM_CREATE           = 1001;		      //房间创建
+    E_ROOM_HEART            = 1002;     	  //房间心跳
+    E_ROOM_STATUS_CHANGE    = 1003;     	  //房间状态改变
+    E_ROOM_CLOSE            = 1004;		      //房间关关闭
+    E_ROOM_ENTER_PLAYER     = 1005;           //玩家进入
+    E_ROOM_QUIT_PLAYER      = 1006;           //玩家退出
+    E_ROOM_BATTLE_REPORT    = 1007;           //战报
+    E_ROOM_END              = 1500;
+
+
+
+    //5000~ 5999 大厅协议
+    E_LOGIN_START		  = 5000;			//登录开始
+    E_LOGIN				  = 5001;			//登录请求
+    E_LOGOUT              = 5002;           //登出请求
+    E_CREATE_ACCOUNT      = 5003;           //创建账号
+    E_CREATE_PLAYER       = 5004;           //创建角色
+
+    E_LOGIN_END           = 5999;
+
+    E_LOBBY_START = 6000;
+    E_ENTER_LOBBY = 6001;
+
+    //NOTIFY 25000~29999
+    NOTIFY_COMMON_ERROR = 29999;
+
+    E_LOBBY_END = 30000;
+}

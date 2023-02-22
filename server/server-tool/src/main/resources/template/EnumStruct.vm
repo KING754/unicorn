@@ -1,0 +1,64 @@
+package com.game.rpc.message.struct;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Gen from tool
+#if(($struct.comment) && $struct.comment != "")
+ * $struct.comment
+#end
+ * @author KING
+ * @date $date
+ */
+public enum $struct.name {
+
+#foreach($info in $$struct.enums)
+#if($foreach.last)
+    ${info.name}((short)$info.valueStr,"$info.comment");
+#else
+    ${info.name}((short)$info.valueStr,"$info.comment"),
+#end
+
+#end
+
+    short value;
+    String desc;
+    ${struct.name}(short value, String desc){
+        this.value = value;
+        this.desc = desc;
+    }
+
+    public short getValue(){
+        return value;
+    }
+
+    public String getDesc(){
+        return desc;
+    }
+
+    public static final short TOTAL_LENGTH = 16;
+    private static Map<Short,${struct.name}> ALL_ENUM_MAP_WITH_VALUE = new HashMap<>();
+    static {
+#foreach($info in $struct.enums)
+        ALL_ENUM_MAP_WITH_VALUE.put(${info.name}.getValue(),${info.name});
+#end
+    }
+    public static ${struct.name} get${struct.name}ByValue(short value){
+        return ALL_ENUM_MAP_WITH_VALUE.get(value);
+    }
+
+    public static ${struct.name} buildTestData(){
+        if(ALL_ENUM_MAP_WITH_VALUE == null || ALL_ENUM_MAP_WITH_VALUE.isEmpty()){
+            return null;
+        }
+        for (${struct.name} enumInfo:ALL_ENUM_MAP_WITH_VALUE.values()) {
+            if(enumInfo != null){
+                return enumInfo;
+            }
+        }
+        return null;
+    }
+
+
+}

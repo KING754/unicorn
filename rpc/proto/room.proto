@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package com.game.rpc.message.st.inner.room;
+
+
+option java_package = "com.game.rpc.message.st.inner.room";
+option java_outer_classname = "Room";
+
+enum EN_RoomStatus{
+    E_RoomStatus_ERROR              = 0;
+    E_RoomStatus_IDLE               = 1;    //空闲
+    E_RoomStatus_BATTLING           = 2;    //战斗中
+    E_RoomStatus_BATTLE_END         = 3;    //战斗结束
+    E_RoomStatus_BATTLE_REPORT      = 4;    //战报完成
+    E_RoomStatus_CLOSE              = 5;    //关闭
+}
+
+enum EN_RoomType{
+    E_RoomType_ERROR         = 0;
+    E_RoomType_DOUBLE        = 1;   //双人
+}
+
+message RoomBaseInfo{
+    int32                   id                  = 1;                //房间ID,启动的时候通过参数传进去,若未收该参数,则server结束启动
+    int32                   pid                 = 2;                //room server的进程ID,用以关闭程序
+    int32                   port                = 3;                //room port in fact,
+    EN_RoomStatus           status              = 4;                //房间状态
+    EN_RoomType             type                = 5;                //房间类型
+	repeated string         playerIds           = 6;                //玩家ID列表
+
+}
+
+message RoomCreateReq{
+    RoomBaseInfo            info                = 1;
+}
+
+message RoomCreateResp{
+}
+
+message RoomHeartReq{
+    int32          id                  = 1;               //房间ID
+}
+
+
+message RoomHeartResp{
+}
+
+message RoomStatusChangeReq{
+    int32                   id                  = 1;               //房间ID
+    EN_RoomStatus           status              = 2;               //房间状态
+}
+
+
+message RoomStatusChangeResp{
+}
+
+
+message RoomCloseReq{
+    int32                   id                  = 1;               //房间ID
+}
+
+
+message RoomCloseResp{
+}
+
+
