@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.7.7</version>
+    </parent>
+
+    <groupId>com.game</groupId>
+    <artifactId>server</artifactId>
+    <version>0.0.1-dev</version>
+    <name>server</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- 模块版本管理 -->
+        <springboot.version>2.7.7</springboot.version>
+        <module.dao.version>0.0.1-dev</module.dao.version>
+        <module.common.version>0.0.1-dev</module.common.version>
+        <module.net.core.version>0.0.1-dev</module.net.core.version>
+        <module.server.version>0.0.1-dev</module.server.version>
+        <module.gateway.version>0.0.1-dev</module.gateway.version>
+        <module.testclient.version>0.0.1-dev</module.testclient.version>
+        <module.rpc.model.version>0.0.1-dev</module.rpc.model.version>
+        <module.constant.version>0.0.1-dev</module.constant.version>
+        <module.tool.version>0.0.1-dev</module.tool.version>
+        <module.exception.version>0.0.1-dev</module.exception.version>
+
+        <!-- 工程相关参数 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <parent.version>0.0.1-dev</parent.version>
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+
+        <!-- 第三jar版本管理 -->
+        <hutool.version>5.8.10</hutool.version>
+        <protobuf.version>3.5.1</protobuf.version>
+        <mybatis.plus.version>3.5.2</mybatis.plus.version>
+        <druid.version>1.2.14</druid.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <fastjson2.version>2.0.23</fastjson2.version>
+
+    </properties>
+
+    <modules>
+        <module>server-exception</module>
+        <module>server-dao</module>
+        <module>server-rpc-model</module>
+        <module>server-net-core</module>
+
+        <module>game-server</module>
+        <module>gateway</module>
+        <module>test-client</module>
+
+        <module>server-tool</module>
+
+        <module>server-common</module>
+    </modules>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+                <version>${springboot.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+    </dependencies>
+
+
+</project>

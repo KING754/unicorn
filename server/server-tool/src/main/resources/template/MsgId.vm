@@ -1,0 +1,32 @@
+package com.game.rpc.message;
+
+/**
+* Gen from tool
+* @author KING
+* @date $date
+*/
+public enum MsgId {
+
+#foreach($info in $msgIdList)
+    ${info.name}((short)$info.valueStr,"$info.comment"),
+#end
+
+    ERROR((short)0,"errorId");
+
+    short id;
+    String desc;
+    MsgId(short id,String desc){
+        this.id = id;
+        this.desc = desc;
+    }
+
+    public short getId(){
+        return id;
+    }
+
+    public String getDesc(){
+        return desc;
+    }
+
+
+}

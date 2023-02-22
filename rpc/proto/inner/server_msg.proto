@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package com.game.rpc.message.inner;
+
+
+option java_package = "com.game.rpc.message.inner";
+option java_outer_classname = "InnerRPC";
+
+enum EN_INNER_CMD_ID {
+    E_INNER_CMD_ERROR_ID = 0;              //错误的消息ID
+    E_REGIST_SERVICE = 1;                  //注册服务
+    E_OFFLINE_SERVICE = 2;                 //下线服务
+    E_HEART_BETA = 3;                      //心跳检测
+    E_FORWARD_MSG = 4;                     //转发消息
+}
+
+enum EN_INNER_CODE {
+    EN_INNER_ERROR_CODE                = 0;      //错误的CODE
+    E_INNER_SUSS                       = 1;
+    E_CONNECT_DUPLICATE                = 2;      //链接重复，链接标识typeNum_id_connId
+    E_INNER_UNKNOWN_ERROR              = 3;      //未知错误
+    E_INNER_SYSTEM_ERROR               = 4;		 //系统错误
+}
+
+
+enum EN_Server_type {
+    SERVER_TYP_ERROR = 0;
+    SERVER_TYPE_GATEWAY = 1;    //网关服务器
+    SERVER_TYPE_LOGIN = 2;      //登录服务器
+    SERVER_TYPE_LOBBY = 3;      //大厅服务器
+    SERVER_ROOM_MANAGER = 4;   //房间管理服务器
+    SERVER_LOGIN_AND_LOBBY = 5;   //登录与大厅一起
+
+}
+
+message RegisterServiceReq {
+    int32 serverId = 1;
+    int32 connId = 2;
+    EN_Server_type server_type = 3;
+    int32 start_msg_id = 4;       //include
+    int32 end_msg_id = 5;       //include
+}
+
+message RegisterServiceResp {
+    EN_INNER_CODE code = 1;
+    int32 gatewayId = 2;
+    int32 connId = 3;
+}
+
+message OfflineServiceReq{
+}
+
+
+message OfflineServiceResp{
+}
+
+
+message HeartBetaReq{
+    int32 onlineNum = 1;                //当前在线人数
+}
+
+
+message HeartBetaResp{
+}
+
+
+message ForwardMessage{
+    bytes forwardMsg = 1;
+}

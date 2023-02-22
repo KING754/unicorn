@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package com.game.rpc.message.st.system;
+
+
+option java_package = "com.game.rpc.message.st.user";
+option java_outer_classname = "LoginStructs";
+
+import "common.proto";
+
+message LoginReq {//登录请求
+    string userName = 1;        //用户名
+    string passWord = 2;        //密码
+}
+
+message LoginResp {
+    common.Player player = 3;         //角色信息
+}
+
+message CreateAccountReq {
+    string accountName          = 1;
+    string password             = 2;
+}
+
+message CreatePlayerReq {
+    string playerName           = 1;
+}
+
+
+message CreatePlayerResp {
+    common.Player player = 1;         //角色信息
+}

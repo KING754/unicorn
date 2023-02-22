@@ -1,0 +1,17 @@
+netty:
+  server:
+    outer:
+      port: 2050
+    inner:
+      port: 2051
+  config:
+    #id+type，必须唯一
+    id: 1
+#reference to :rpc\proto\inner\server_msg.proto
+#    SERVER_TYP_ERROR = 0;
+#    SERVER_TYPE_GATEWAY = 1;    //网关服务器
+#    SERVER_TYPE_LOGIN = 2;      //登录服务器
+#    SERVER_TYPE_LOBBY = 3;      //大厅服务器
+    type: 1
+    receive_min_msg: 1
+    receive_max_msg: 65535

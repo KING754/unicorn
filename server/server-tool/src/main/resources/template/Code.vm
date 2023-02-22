@@ -1,0 +1,33 @@
+package com.game.rpc.message;
+
+/**
+* Gen from tool
+* @author KING
+* @date $date
+*/
+public enum Code {
+
+#foreach($info in $msgIdList)
+#if($info.shortValue != 0)
+    ${info.name}((short)$info.valueStr,"$info.comment"),
+#end
+#end
+    E_SUSS((short)0,"suss");
+
+    short code;
+    String info;
+
+    Code(short code,String info){
+        this.code = code;
+        this.info = info;
+    }
+
+    public short getCode(){
+        return code;
+    }
+
+    public String getInfo(){
+        return info;
+    }
+
+}
