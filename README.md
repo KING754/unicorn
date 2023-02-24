@@ -4,10 +4,10 @@
 
 ---
 主要运用的框架与技术:  
-guice进行对象管理    
-mybatis进行数据库操作   
+springboot进行对象管理    
+mybatisplus进行数据库操作   
 druid做数据库连接池    
-redis做数据缓存    
+redis做数据缓存[目前还未接入]    
 
 
 ## Message 规则
